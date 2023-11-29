@@ -21,7 +21,7 @@ export default async function TransactionsTable({
           <div className="md:hidden">
             {messageNotifications?.map((notification) => (
               <div
-                key={notification.message_id}
+                key={notification.id}
                 className="mb-2 w-full rounded-md bg-white p-4"
               >
                 <div className="flex items-center justify-between border-b pb-4">
@@ -37,14 +37,14 @@ export default async function TransactionsTable({
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {notification.message_id}
+                      {notification.message_text}
                     </p>
-                    <p>{notification.message_text}</p>
+                    <p>{notification.message_to}</p>
                   </div>
-                  <div className="flex justify-end gap-2">
+                  {/* <div className="flex justify-end gap-2">
                     <UpdateTransaction id={notification.message_id} />
                     <DeleteTransaction id={notification.message_id} />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}
@@ -56,13 +56,13 @@ export default async function TransactionsTable({
                   Date
                 </th>
                 <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                  From
+                  Mobile
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Id
+                  Message
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Text
+                  Shortcode
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
@@ -72,7 +72,7 @@ export default async function TransactionsTable({
             <tbody className="bg-white">
               {messageNotifications?.map((notification) => (
                 <tr
-                  key={notification.message_id}
+                  key={notification.id}
                   className="w-full border-b py-3 text-sm last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
@@ -86,10 +86,10 @@ export default async function TransactionsTable({
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {notification.message_id}
+                    {notification.message_text}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                  {notification.message_text}
+                  {notification.message_to}
                   </td>
                   {/* <td className="whitespace-nowrap px-3 py-3">
                     {notification.date}
@@ -97,12 +97,12 @@ export default async function TransactionsTable({
                   <td className="whitespace-nowrap px-3 py-3">
                     {notification.institution_name}
                   </td> */}
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                  {/* <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <UpdateTransaction id={notification.message_id} />
                       <DeleteTransaction id={notification.message_id} />
                     </div>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

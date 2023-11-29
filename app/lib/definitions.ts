@@ -168,6 +168,13 @@ export type MessageNotificationForm = {
   id: number;
   message_date: string;
   message_from: string;
-  message_id: string;
   message_text: string;
+  message_to: string;
+};
+
+export type ExaminationResultForm = {
+  id: number;
+  index_number: string;
+  result: string;
+  date_of_entry: string;
 };

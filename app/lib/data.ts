@@ -14,6 +14,7 @@ import {
   ProjectForm,
   TransactionForm,
   MessageNotificationForm,
+  ExaminationResultForm,
 } from './definitions';
 import { formatCurrency } from './utils';
 import {
@@ -516,7 +517,7 @@ export async function fetchMessageNotifications() {
     */
 
     const [rows, fields] = await pool.query(
-      'select ID, MessageDate, MessageFrom, MessageId, MessageText from incomingmessagenotificationrequests order by ID asc;',
+      'select ID, MessageDate, MessageFrom, MessageText, MessageTo from incomingmessagenotificationrequests order by ID desc limit 10;',
     );
 
     // Map the rows to the defined type
@@ -525,14 +526,14 @@ export async function fetchMessageNotifications() {
         ID: number;
         MessageDate: string;
         MessageFrom: string;
-        MessageId: string;
         MessageText: string;
+        MessageTo: string;
       }) => ({
         id: row.ID,
         message_date: row.MessageDate,
         message_from: row.MessageFrom,
-        message_id: row.MessageId,
         message_text: row.MessageText,
+        message_to: row.MessageTo,
       }),
     );
 
@@ -541,7 +542,51 @@ export async function fetchMessageNotifications() {
     return messageNotifications;
   } catch (err) {
     console.error('Database Error:', err);
-    //throw new Error('Failed to fetch all MessageNotifications.');
+    throw new Error('Failed to fetch all MessageNotifications.');
+  }
+}
+
+export async function fetchExaminationResults() {
+  noStore();
+  try {
+    /*
+    const data = await sql<CustomerField>`
+      SELECT
+        id,
+        name
+      FROM customers
+      ORDER BY name ASC
+    `;
+
+    const customers = data.rows;
+    */
+
+    // 'select ID, IndexNumber, Result, DATE(TransactionDate) as TransDate from examinationresults order by ID asc limit 10;',
+    const [rows, fields] = await pool.query(
+      "select ID, IndexNumber, Result, DATE_FORMAT(TransactionDate, '%d-%m-%Y') AS TransDate from examinationresults order by ID asc limit 10;",
+    );
+
+    // Map the rows to the defined type
+    const examinationResults: ExaminationResultForm[] = rows.map(
+      (row: {
+        ID: number;
+        IndexNumber: string;
+        Result: string;
+        TransDate: string;
+      }) => ({
+        id: row.ID,
+        index_number: row.IndexNumber,
+        result: row.Result,
+        date_of_entry: row.TransDate,
+      }),
+    );
+
+    //console.log('examinationResults: ', examinationResults);
+
+    return examinationResults;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all ExaminationResults.');
   }
 }
 
@@ -803,6 +848,27 @@ export async function fetchTransactionsPages(query: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch total number of transactions.');
+  }
+}
+
+export async function fetchmessageNotificationsPages(query: string) {
+  noStore();
+  try {
+    /*
+    const [rows] = await pool.query(
+      'select count(ID) as myCount from incomingmessagenotificationrequests;',
+    );
+
+    // Extract the single value from the result
+    const myCount = rows[0] ? rows[0].myCount : 0;
+
+    const totalPages = Math.ceil(Number(myCount) / ITEMS_PER_PAGE);
+    */
+    const totalPages = 1;
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of messageNotifications.');
   }
 }
 

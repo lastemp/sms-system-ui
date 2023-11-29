@@ -16,16 +16,10 @@ import clsx from 'clsx';
 const links = [
   //{ name: 'Home', href: '/dashboard', icon: HomeIcon },
   { name: 'Home', href: '/dashboard/overview', icon: HomeIcon },
- /*  {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
-  }, */
-  //{ name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Artists', href: '/dashboard/artists', icon: UserGroupIcon },
+  /* { name: 'Artists', href: '/dashboard/artists', icon: UserGroupIcon },
   { name: 'Institutions', href: '/dashboard/institutions', icon: BuildingOffice2Icon },
-  { name: 'Projects', href: '/dashboard/projects', icon: BriefcaseIcon },
-  { name: 'Transactions', href: '/dashboard/transactions', icon: DocumentDuplicateIcon },
+  { name: 'Projects', href: '/dashboard/projects', icon: BriefcaseIcon }, */
+  { name: 'Examination Results', href: '/dashboard/transactions', icon: BriefcaseIcon },
   { name: 'Message Notifications', href: '/dashboard/messagenotifications', icon: DocumentDuplicateIcon },
 ];
 
