@@ -40,6 +40,7 @@ export default async function TransactionsTable({
                       {notification.message_text}
                     </p>
                     <p>{notification.message_to}</p>
+                    <p>{notification.message_status}</p>
                   </div>
                   {/* <div className="flex justify-end gap-2">
                     <UpdateTransaction id={notification.message_id} />
@@ -63,6 +64,9 @@ export default async function TransactionsTable({
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Shortcode
+                </th>
+                <th scope="col" className="px-3 py-5 font-medium">
+                  Status
                 </th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Edit</span>
@@ -90,6 +94,9 @@ export default async function TransactionsTable({
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                   {notification.message_to}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-3">
+                  {notification.message_status}
                   </td>
                   {/* <td className="whitespace-nowrap px-3 py-3">
                     {notification.date}

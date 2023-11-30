@@ -170,6 +170,7 @@ export type MessageNotificationForm = {
   message_from: string;
   message_text: string;
   message_to: string;
+  message_status: string;
 };
 
 export type ExaminationResultForm = {

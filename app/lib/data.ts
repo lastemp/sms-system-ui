@@ -146,6 +146,37 @@ export async function fetchLatestProjects() {
   }
 }
 
+export async function fetchLatestMessageNotifications() {
+  noStore();
+  try {
+    const [rows, fields] = await pool.query(
+      'select ID, MessageDate, MessageFrom, MessageText, MessageTo from incomingmessagenotificationrequests order by ID desc limit 4;',
+    );
+
+    // Map the rows to the defined type
+    const messageNotifications: MessageNotificationForm[] = rows.map(
+      (row: {
+        ID: number;
+        MessageDate: string;
+        MessageFrom: string;
+        MessageText: string;
+        MessageTo: string;
+      }) => ({
+        id: row.ID,
+        message_date: row.MessageDate,
+        message_from: row.MessageFrom,
+        message_text: row.MessageText,
+        message_to: row.MessageTo,
+      }),
+    );
+
+    return messageNotifications;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest MessageNotifications.');
+  }
+}
+
 export async function fetchCardData() {
   noStore();
   try {
@@ -192,6 +223,39 @@ export async function fetchCardData() {
     };
     */
 
+    // incomingmessagenotificationrequests
+    const [rowsA] = await pool.query(
+      'select count(ID) as myCount from incomingmessagenotificationrequests;',
+    );
+
+    // Extract the single value from the result
+    const numberOfMessageNotifications = rowsA[0] ? rowsA[0].myCount : 0;
+
+    // examinationresults
+    const [rowsB] = await pool.query(
+      'select count(ID) as myCount from examinationresults;',
+    );
+
+    // Extract the single value from the result
+    const numberOfExaminationResults = rowsB[0] ? rowsB[0].myCount : 0;
+
+    // incomingmessagenotificationrequests - Successful
+    const [rowsC] = await pool.query(
+      'select count(ID) as myCount from incomingmessagenotificationrequests where StatusCode_Cbs = 1;',
+    );
+
+    // Extract the single value from the result
+    const totalSuccessfulMessageNotifications = rowsC[0] ? rowsC[0].myCount : 0;
+
+    // incomingmessagenotificationrequests - Failed
+    const [rowsD] = await pool.query(
+      'select count(ID) as myCount from incomingmessagenotificationrequests where StatusCode_Cbs = 1;',
+    );
+
+    // Extract the single value from the result
+    const totalFailedMessageNotifications = rowsD[0] ? rowsD[0].myCount : 0;
+
+    /*
     const numberOfProjects = projects.length;
     const numberOfArtists = artists.length;
     const totalPaidProjects = projects.filter(
@@ -206,6 +270,14 @@ export async function fetchCardData() {
       numberOfArtists,
       totalPaidProjects,
       totalPendingProjects,
+    };
+    */
+
+    return {
+      numberOfMessageNotifications,
+      numberOfExaminationResults,
+      totalSuccessfulMessageNotifications,
+      totalFailedMessageNotifications,
     };
   } catch (error) {
     console.error('Database Error:', error);
@@ -517,7 +589,7 @@ export async function fetchMessageNotifications() {
     */
 
     const [rows, fields] = await pool.query(
-      'select ID, MessageDate, MessageFrom, MessageText, MessageTo from incomingmessagenotificationrequests order by ID desc limit 10;',
+      'select ID, MessageDate, MessageFrom, MessageText, MessageTo, StatusMessage_Cbs from incomingmessagenotificationrequests order by ID desc limit 10;',
     );
 
     // Map the rows to the defined type
@@ -528,12 +600,14 @@ export async function fetchMessageNotifications() {
         MessageFrom: string;
         MessageText: string;
         MessageTo: string;
+        StatusMessage_Cbs: string;
       }) => ({
         id: row.ID,
         message_date: row.MessageDate,
         message_from: row.MessageFrom,
         message_text: row.MessageText,
         message_to: row.MessageTo,
+        message_status: row.StatusMessage_Cbs,
       }),
     );
 
